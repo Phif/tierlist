@@ -17,11 +17,14 @@ export default class Message {
         document.querySelector('#messages-container').appendChild(this.message);
         this.message.style.transform = "scale(0)";
         setTimeout(() => {this.message.style.transform = "scale(1)";}, 100)
-        setTimeout(() => {this.message.style.transform = "scale(0)";}, this.duration)
-        setTimeout(() => {this.remove()}, this.duration + 100)
+        if (this.duration != 0) {
+            setTimeout(() => {this.message.style.transform = "scale(0)";}, this.duration)
+            setTimeout(() => {this.remove()}, this.duration + 100)
+        }
     }
-
+    
     remove() {
+        console.log("ah")+
         this.message.remove();
     }
 }

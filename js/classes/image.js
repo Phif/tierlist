@@ -5,6 +5,7 @@ export default class ImageElement {
         this.id = id;
         this.caption = caption;
         this.src = src;
+        this.isCropping = false;
     }
     
     create() {
@@ -15,8 +16,7 @@ export default class ImageElement {
         container.appendChild(caption);
         container.addEventListener("dblclick", () => {
             this.displayFullImage(image, caption);
-        });
-        // new Message("green", "Image added", `${this.caption} added to the list.`, 3000).create();
+        });        
     }
     
     remove() {
@@ -36,7 +36,20 @@ export default class ImageElement {
         image.id = `${this.id}`;
         image.src = this.src;
         image.dataset.src = this.src;
-        image.classList.add("image");
+        image.style.display = "none";
+
+        let loaded = false;
+        image.onload = () => {
+            if (!loaded) {
+                image.src = this.resizeImage(image, 1000, 1000);
+                image.dataset.src = this.resizeImage(image, 1000, 1000);
+            }
+            loaded = true;
+            this.src = image.src;
+            image.dataset.src = image.src;
+            image.classList.add("image");
+            image.style.display = "block";
+        };
         return image;
     }
     
@@ -71,8 +84,6 @@ export default class ImageElement {
         let fullImageCloseButton = document.querySelector("#full-image-close");
         let fullImageDeleteButton = document.querySelector("#full-image-delete");        
         let fullImageCropButton = document.querySelector("#full-image-crop");
-        let fullImageValidateCropButton = document.querySelector("#full-image-validate-crop");
-        let fullImageCancelCropButton = document.querySelector("#full-image-cancel-crop");
         
         fullImageContainer.onmousedown = (event) => {
             if (event.target === event.currentTarget) {
@@ -92,7 +103,9 @@ export default class ImageElement {
             let newCaption = prompt("Rename caption", caption.innerHTML);
             if (newCaption != null) {
                 fullImageCaption.innerHTML = newCaption;
+                this.caption = newCaption;
                 caption.innerHTML = newCaption;
+                new Message("dodgerblue", "", `Image was successfully renamed.`, 3000).create();
             }
         };
         
@@ -103,7 +116,10 @@ export default class ImageElement {
         };
         
         fullImageCropButton.onclick = () => {
-            this.startCropping(fullImage);
+            if (!this.isCropping) {
+                this.isCropping = true;
+                this.startCropping(fullImage);
+            }
         }
     }
     
@@ -115,10 +131,14 @@ export default class ImageElement {
         document.querySelector("#full-image-crop-container").appendChild(document.querySelector(".croppie-container"));
         
         document.querySelector("#full-image-validate-crop").onclick = () => {
-            this.validateCropping(image, croppie);
+            if (this.isCropping) {
+                this.validateCropping(image, croppie);
+            }
         }
         document.querySelector("#full-image-cancel-crop").onclick = () => {
-            this.stopCropping(image);
+            if (this.isCropping) {
+                this.stopCropping(image);
+            }
         }
     }
     
@@ -130,11 +150,13 @@ export default class ImageElement {
                 let base64data = reader.result;
                 document.querySelector(`#${this.id}`).src = base64data;
                 this.stopCropping(image);
+                new Message("dodgerblue", "", `Image was successfully cropped.`, 3000).create();
             }
         });
     }
     
     stopCropping(image) {      
+        this.isCropping = false;
         document.querySelector("#full-image-crop-container").appendChild(image);
         document.querySelector(".croppie-container").remove();
     }
@@ -150,10 +172,8 @@ export default class ImageElement {
         }
         canvas.width = maxWidth;
         canvas.height = maxHeight;
-        console.log(canvas.width, canvas.height);
         ctx.drawImage(image, 0, 0, maxWidth, maxHeight);
         let canvasData = canvas.toDataURL("image/webp", 1);
-        console.log(canvasData); 
-        
+        return canvasData;
     }
 }

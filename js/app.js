@@ -36,6 +36,7 @@ window.onload = function () {
     };
     
     imageInput.onchange = () => {
+        new Message("dodgerblue", "Loading...", `Processing your image(s).`, 3000).create();
         const selectedFiles = imageInput.files;
         for (let i = 0; i < selectedFiles.length; i++) {
             const reader = new FileReader();
