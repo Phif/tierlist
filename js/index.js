@@ -3,6 +3,17 @@ import ImageElement from "./classes/image.js";
 import Message from "./classes/message.js";
 
 window.onload = function () {
+    // JSCOLOR INIT
+    jscolor.presets.default = {
+        palette:'#DC143C #FF8C00 #FFD700 #32CD32 #1E90FF #9400D3', 
+        paletteCols:6, paletteHeight:20, width:100, height:100, 
+        sliderSize:15, shadow:false
+    };
+
+    function colorize(color) {
+        document.querySelector(`#tier0`).style.backgroundColor = color;
+    }
+
     // CHANGE TIERLIST NAME
     const tierlistName = document.getElementById("tierlist-name");
     tierlistName.onclick = () => {
@@ -18,7 +29,7 @@ window.onload = function () {
     initTiers();
     function initTiers() {
         let baseTierNames = ["S", "A", "B", "C", "D", "F"];
-        let baseTierColors = ["crimson", "darkorange", "gold", "limegreen", "dodgerblue", "darkviolet"];
+        let baseTierColors = ["#dc143c", "#ff8c00", "#ffd700", "#32cd32", "#1e90ff", "#8a2be2"];
         for (let i = 0; i < 6; i++) {
             let newTier = new Tier("tier"+i, baseTierNames[i], baseTierColors[i]);
             newTier.create();
@@ -36,12 +47,11 @@ window.onload = function () {
     };
     
     imageInput.onchange = () => {
-        new Message("dodgerblue", "Loading...", `Processing your image(s).`, 3000).create();
         const selectedFiles = imageInput.files;
         for (let i = 0; i < selectedFiles.length; i++) {
             const reader = new FileReader();
             reader.onload = function(event) {
-                const image = new ImageElement("image"+imageCount, imageInput.files[i].name.substring(0, imageInput.files[i].name.lastIndexOf('.')), event.target.result);
+                const image = new ImageElement("image"+imageCount, selectedFiles[i].name.substring(0, selectedFiles[i].name.lastIndexOf('.')), event.target.result);
                 image.create();
                 imageCount++;
             };
@@ -52,7 +62,7 @@ window.onload = function () {
     // ADD TIER
     const addTierButton = document.getElementById("add-tier");
     addTierButton.addEventListener("click", () => {
-        let newTier = new Tier("tier"+tierCount, "New Tier", "lightgrey");
+        let newTier = new Tier("tier"+tierCount, "New Tier", "#cccccc");
         newTier.create();
         tierCount++;
         tiers.push(newTier);
@@ -79,4 +89,14 @@ window.onload = function () {
         });
     });
 
+    // SHOW/HIDE CAPTIONS
+    const toggleCaptionsButton = document.getElementById("toggle-captions");
+    toggleCaptionsButton.addEventListener("click", () => {
+        document.querySelectorAll(".image-caption").forEach(caption => {
+            caption.style.visibility = caption.style.visibility == "visible" ? "hidden" : "visible";
+        });
+        toggleCaptionsButton.title = toggleCaptionsButton.title == "Hide captions" ? "Show captions" : "Hide captions";
+        toggleCaptionsButton.style.color = toggleCaptionsButton.style.color == "limegreen" ? "crimson" : "limegreen";
+    });
+    
 }

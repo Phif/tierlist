@@ -28,6 +28,62 @@ header {
     top: 0;
 }
 
+nav {
+    width: 80%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#website-name {
+    font-family: "Rampart One", sans-serif;
+}
+
+#options {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+#image-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.option-button {
+    cursor: pointer;
+    color: black;
+    transition: all 0.1s linear;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    border: black 1px solid;
+    background-color: white;
+}
+
+.option-button:hover {
+    background-color: #ccc;
+}
+
+.button-disabled {
+    cursor: not-allowed;
+    background-color: gray;
+}
+
+.button-disabled:hover {
+    background-color: gray;
+}
+
+#toggle-captions {
+    color: red;
+}
+
 main {
     max-width: 80%;
     margin: auto;
@@ -67,7 +123,6 @@ footer {
 .tier {
     display: flex;
     flex-flow: row wrap;
-    align-content: center;
     padding: 5px;
     width: 100%;
     border-radius: 10px;
@@ -76,10 +131,8 @@ footer {
 
 .tier-options {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: column wrap;
     justify-content: space-between;
-    align-items: center;
-    gap: 5px;
 }
 
 .remove {
@@ -102,14 +155,22 @@ footer {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-.fold {
+.color {
     cursor: pointer;
     transition: all 0.1s linear;
     border-radius: 5px;
+    background-image:none;
 }
 
-.fold:hover {
+.color:hover {
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+.color-picker {
+    cursor: pointer;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
 }
 
 .tier-name {
@@ -165,6 +226,7 @@ footer {
 }
 
 .image-caption {
+    visibility: hidden;
     padding: 2px;
     position: absolute;
     bottom: 0;
@@ -176,6 +238,13 @@ footer {
     word-break: break-word;
     font-size: smaller;
     border-radius: 0 0 10px 10px;
+}
+
+#full-image-close {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
 }
 
 #full-image-buttons {
@@ -202,6 +271,7 @@ footer {
 
 #full-image-crop-container {
     display: flex;
+    flex-flow: column nowrap;
     width: fit-content;
     height: fit-content;
 }

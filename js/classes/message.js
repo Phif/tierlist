@@ -24,7 +24,6 @@ export default class Message {
     }
     
     remove() {
-        console.log("ah")+
         this.message.remove();
     }
 }

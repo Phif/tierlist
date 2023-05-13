@@ -37,19 +37,24 @@ export default class ImageElement {
         image.src = this.src;
         image.dataset.src = this.src;
         image.style.display = "none";
-
+        
         let loaded = false;
         image.onload = () => {
-            if (!loaded) {
-                image.src = this.resizeImage(image, 1000, 1000);
-                image.dataset.src = this.resizeImage(image, 1000, 1000);
+            if (image.width > 1000 || image.height > 1000) {
+                if (!loaded) {
+                    image.src = this.resizeImage(image, 1000, 1000);
+                    image.dataset.src = this.resizeImage(image, 1000, 1000);
+                }
+                loaded = true;
+                this.src = image.src;
+                image.dataset.src = image.src;
+                image.classList.add("image");
+                image.style.display = "block";
+            } else {
+                image.classList.add("image");
+                image.style.display = "block";
             }
-            loaded = true;
-            this.src = image.src;
-            image.dataset.src = image.src;
-            image.classList.add("image");
-            image.style.display = "block";
-        };
+        }
         return image;
     }
     
@@ -65,18 +70,18 @@ export default class ImageElement {
         let fullImageContainer = document.createElement("div");
         fullImageContainer.id = "full-image-container";
         fullImageContainer.innerHTML = `
+        <button id="full-image-close" class="option-button material-symbols-rounded" title="Close">close</button>
         <div id="full-image-crop-container">
         <img id="full-image" src="${image.dataset.src}">
         </div>
-        <h2 id="full-image-caption">${this.caption}</h2>
+        <h2 id="full-image-caption" title="Edit this caption">${this.caption}</h2>
         <div id="full-image-buttons">
-        <button id="full-image-close">Close</button>
-        <button id="full-image-delete">Delete</button>
-        <button id="full-image-crop">Crop</button>
-        <button id="full-image-validate-crop">Validate crop</button>
-        <button id="full-image-cancel-crop">Cancel crop</button>
+        <button id="full-image-delete" class="option-button material-symbols-rounded" title="Delete this image">delete</button>
+        <button id="full-image-crop" class="option-button material-symbols-rounded" title="Crop this image">crop</button>
+        <button id="full-image-validate-crop" class="option-button material-symbols-rounded button-disabled" title="Validate current cropping">check</button>
         </div>
         `;
+        // <button id="full-image-cancel-crop" class="option-button material-symbols-rounded">cancel</button>
         
         document.querySelector("main").appendChild(fullImageContainer);
         let fullImage = document.querySelector("#full-image");
@@ -112,14 +117,20 @@ export default class ImageElement {
         fullImageDeleteButton.onclick = () => {
             document.querySelector(`#image-container-${this.id}`).remove();
             fullImageContainer.remove();
-            
+            new Message("crimson", "", `Image was successfully deleted.`, 3000).create();            
         };
         
         fullImageCropButton.onclick = () => {
             if (!this.isCropping) {
+                document.querySelector("#full-image-crop").innerHTML = "cancel";
+                document.querySelector("#full-image-crop").title = "Cancel current cropping";
+                document.querySelector("#full-image-validate-crop").classList.toggle("button-disabled");
                 this.isCropping = true;
                 this.startCropping(fullImage);
+            } else {
+                this.stopCropping(fullImage);
             }
+                
         }
     }
     
@@ -130,14 +141,15 @@ export default class ImageElement {
         });
         document.querySelector("#full-image-crop-container").appendChild(document.querySelector(".croppie-container"));
         
+        // document.querySelector("#full-image-cancel-crop").onclick = () => {
+        //     if (this.isCropping) {
+        //         this.stopCropping(image);
+        //     }
+        // }
+
         document.querySelector("#full-image-validate-crop").onclick = () => {
             if (this.isCropping) {
                 this.validateCropping(image, croppie);
-            }
-        }
-        document.querySelector("#full-image-cancel-crop").onclick = () => {
-            if (this.isCropping) {
-                this.stopCropping(image);
             }
         }
     }
@@ -157,6 +169,9 @@ export default class ImageElement {
     
     stopCropping(image) {      
         this.isCropping = false;
+        document.querySelector("#full-image-crop").innerHTML = "crop";
+        document.querySelector("#full-image-crop").title = "Crop this image";
+        document.querySelector("#full-image-validate-crop").classList.toggle("button-disabled");
         document.querySelector("#full-image-crop-container").appendChild(image);
         document.querySelector(".croppie-container").remove();
     }
