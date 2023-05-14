@@ -63,6 +63,11 @@ export default class ImageElement {
         caption.id = `image-caption-${this.id}`;
         caption.classList.add("image-caption");
         caption.innerHTML = this.caption;
+        if (document.querySelector("#toggle-captions").title == "Hide captions") {
+            caption.style.visibility = "visible";
+        } else {
+            caption.style.visibility = "hidden";
+        }
         return caption;
     }
     
@@ -81,7 +86,6 @@ export default class ImageElement {
         <button id="full-image-validate-crop" class="option-button material-symbols-rounded button-disabled" title="Validate current cropping">check</button>
         </div>
         `;
-        // <button id="full-image-cancel-crop" class="option-button material-symbols-rounded">cancel</button>
         
         document.querySelector("main").appendChild(fullImageContainer);
         let fullImage = document.querySelector("#full-image");
@@ -140,12 +144,6 @@ export default class ImageElement {
             showZoomer: false,
         });
         document.querySelector("#full-image-crop-container").appendChild(document.querySelector(".croppie-container"));
-        
-        // document.querySelector("#full-image-cancel-crop").onclick = () => {
-        //     if (this.isCropping) {
-        //         this.stopCropping(image);
-        //     }
-        // }
 
         document.querySelector("#full-image-validate-crop").onclick = () => {
             if (this.isCropping) {

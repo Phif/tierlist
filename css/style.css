@@ -159,7 +159,7 @@ footer {
     cursor: pointer;
     transition: all 0.1s linear;
     border-radius: 5px;
-    background-image:none;
+    background-image: none;
 }
 
 .color:hover {
@@ -226,7 +226,6 @@ footer {
 }
 
 .image-caption {
-    visibility: hidden;
     padding: 2px;
     position: absolute;
     bottom: 0;

@@ -15,7 +15,8 @@ export default class Tier {
         <span id="remove-${this.id}" class="remove material-symbols-rounded sortable-disabled" title="Delete this tier">close</span>
         <span id="drag-${this.id}"class="drag material-symbols-rounded sortable-disabled" title="Move this tier">drag_indicator</span>
         <span id="color-${this.id}" class="color material-symbols-rounded sortable-disabled" title="Change this tier's color" data-jscolor="{
-            onInput: 'this.previewElement.parentElement.parentElement.style.backgroundColor = this.toHEXString()',
+            onInput: 
+            'this.previewElement.parentElement.parentElement.style.backgroundColor = this.toHEXString(); this.previewElement.style.backgroundImage = null',
             value: '${this.color}',
         }">format_color_fill</span>
         </div>
@@ -23,7 +24,6 @@ export default class Tier {
         <div id="tier-images-${this.id}" class="tier-images sortable-disabled"></div>
         `
         document.querySelector('#tierlist-container').appendChild(tier);
-        
         document.querySelector(`#remove-${this.id}`).addEventListener("click", () => {
             this.remove();
         });
@@ -40,8 +40,9 @@ export default class Tier {
             swapThreshold: 1,
             group: "shared",
         });
-
+        
         jscolor.install();
+        document.querySelector(`#color-${this.id}`).style.removeProperty("background-image");
     }
     
     remove() {

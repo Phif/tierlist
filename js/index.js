@@ -93,10 +93,13 @@ window.onload = function () {
     const toggleCaptionsButton = document.getElementById("toggle-captions");
     toggleCaptionsButton.addEventListener("click", () => {
         document.querySelectorAll(".image-caption").forEach(caption => {
-            caption.style.visibility = caption.style.visibility == "visible" ? "hidden" : "visible";
+            if (caption.style.visibility == "hidden") {
+                caption.style.visibility = "visible";
+            } else {
+                caption.style.visibility = "hidden";
+            }
         });
         toggleCaptionsButton.title = toggleCaptionsButton.title == "Hide captions" ? "Show captions" : "Hide captions";
         toggleCaptionsButton.style.color = toggleCaptionsButton.style.color == "limegreen" ? "crimson" : "limegreen";
-    });
-    
+    });   
 }
