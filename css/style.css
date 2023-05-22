@@ -181,6 +181,7 @@ footer {
     border-radius: 10px;
     height: 100px; /* Maintient la hauteur de la ligne*/
     width: 100px; 
+    padding: 5px;
     font-size: larger;
     font-weight: bold;
     transition: all 0.1s linear;
@@ -226,6 +227,12 @@ footer {
 }
 
 .image-caption {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 2px;
     position: absolute;
     bottom: 0;
@@ -320,6 +327,7 @@ footer {
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    gap: 1em;
     margin: auto;
     padding: 10px;
     width: 300px;

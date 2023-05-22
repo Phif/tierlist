@@ -10,10 +10,12 @@ export default class Message {
     create() {
         this.message.classList.add("message");
         this.message.style.backgroundColor = this.color;
-        this.message.innerHTML = `
-        <div class="message-title">${this.title}</div>
-        <div class="message-content">${this.content}</div>
-        `
+        if (this.title != "") {
+            this.message.innerHTML += `<span class="message-title">${this.title}</span>`
+        }
+        if (this.content != "") {
+            this.message.innerHTML += `<span class="message-content">${this.content}</span>`
+        }
         document.querySelector('#messages-container').appendChild(this.message);
         this.message.style.transform = "scale(0)";
         setTimeout(() => {this.message.style.transform = "scale(1)";}, 100)

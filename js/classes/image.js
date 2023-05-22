@@ -114,14 +114,14 @@ export default class ImageElement {
                 fullImageCaption.innerHTML = newCaption;
                 this.caption = newCaption;
                 caption.innerHTML = newCaption;
-                new Message("dodgerblue", "", `Image was successfully renamed.`, 3000).create();
+                new Message("dodgerblue", `Image was successfully renamed.`, "", 3000).create();
             }
         };
         
         fullImageDeleteButton.onclick = () => {
             document.querySelector(`#image-container-${this.id}`).remove();
             fullImageContainer.remove();
-            new Message("crimson", "", `Image was successfully deleted.`, 3000).create();            
+            new Message("crimson", `Image was successfully deleted.`, "", 3000).create();            
         };
         
         fullImageCropButton.onclick = () => {
@@ -160,7 +160,7 @@ export default class ImageElement {
                 let base64data = reader.result;
                 document.querySelector(`#${this.id}`).src = base64data;
                 this.stopCropping(image);
-                new Message("dodgerblue", "", `Image was successfully cropped.`, 3000).create();
+                new Message("dodgerblue", `Image was successfully cropped.`, `<img src="${base64data}">`, 3000).create();
             }
         });
     }
