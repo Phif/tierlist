@@ -96,15 +96,18 @@ export default class ImageElement {
         
         fullImageContainer.onmousedown = (event) => {
             if (event.target === event.currentTarget) {
+                this.isCropping = false;
                 fullImageContainer.remove();
             }
         };
         document.onkeydown = (event) => {
             if (event.key === "Escape") {
+                this.isCropping = false;
                 fullImageContainer.remove();
             }
         };
         fullImageCloseButton.onclick = () => {
+            this.isCropping = false;
             fullImageContainer.remove();
         };
         

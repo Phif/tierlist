@@ -101,5 +101,5 @@ window.onload = function () {
         });
         toggleCaptionsButton.title = toggleCaptionsButton.title == "Hide captions" ? "Show captions" : "Hide captions";
         toggleCaptionsButton.style.color = toggleCaptionsButton.style.color == "limegreen" ? "crimson" : "limegreen";
-    });   
+    });  
 }
